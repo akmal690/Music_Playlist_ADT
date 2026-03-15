@@ -1,0 +1,305 @@
+/* --- Reset & Layout --- */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: 'Arial', sans-serif;
+}
+
+body {
+    background: #000;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    overflow: hidden;
+    position: relative;
+    user-select: none;
+}
+
+/* --- Music Spectrum Background (Original Centered Style) --- */
+.spectrum-container {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    /* Kept Centered as per request */
+    z-index: 0;
+    pointer-events: none;
+    gap: 6px;
+}
+
+.bar {
+    width: 15px;
+    height: 100px;
+    background: linear-gradient(to top, #ff0000, #ff4d4d);
+    border-radius: 10px;
+    opacity: 0.3;
+    transform-origin: center;
+    animation: bounce 1s infinite ease-in-out;
+    animation-play-state: paused;
+}
+
+@keyframes bounce {
+
+    0%,
+    100% {
+        height: 20px;
+        opacity: 0.1;
+    }
+
+    50% {
+        height: 250px;
+        opacity: 0.5;
+    }
+}
+
+/* --- Player Card --- */
+.player-card {
+    position: relative;
+    width: 400px;
+    height: 450px;
+    background: rgba(200, 0, 0, 0.25);
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.5);
+    border-radius: 30px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding: 30px;
+    overflow: visible;
+    z-index: 10;
+}
+
+/* --- Vertical Scrolling Song Title --- */
+.song-title-container {
+    position: absolute;
+    bottom: 48%;
+    left: -70px;
+    width: 220px;
+    height: 50px;
+    transform: translateY(-50%) rotate(-90deg);
+    transform-origin: center center;
+    overflow: hidden;
+    z-index: 5;
+    pointer-events: none;
+    display: flex;
+    align-items: center;
+}
+
+.song-title-text {
+    display: inline-block;
+    white-space: nowrap;
+    font-size: 1.8rem;
+    font-weight: 900;
+    color: rgba(255, 255, 255, 0.9);
+    padding-left: 100%;
+    animation: marquee 12s linear infinite;
+}
+
+.paused-text {
+    animation-play-state: paused;
+}
+
+@keyframes marquee {
+    0% {
+        transform: translate(0, 0);
+    }
+
+    100% {
+        transform: translate(-100%, 0);
+    }
+}
+
+/* --- Rotating Disc --- */
+.disc-wrapper {
+    position: absolute;
+    top: -70px;
+    right: -50px;
+    width: 360px;
+    height: 360px;
+    border-radius: 50%;
+    background: #111;
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.5);
+    z-index: 10;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-image: repeating-radial-gradient(#222 0, #111 2px, #222 3px, #111 4px);
+}
+
+.spinning {
+    animation: spin 4s linear infinite;
+}
+
+.paused {
+    animation-play-state: paused;
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+.disc-art-container {
+    position: absolute;
+    width: 135px;
+    height: 135px;
+    z-index: 12;
+    background: #222;
+    border-radius: 50%;
+    transform: translateZ(0);
+    clip-path: circle(50% at 50% 50%);
+    overflow: hidden;
+    border: 4px solid #000;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Default Icon for Local Music (Since we can't easily read MP3 art) */
+.default-art {
+    font-size: 4rem;
+    color: #555;
+}
+
+/* --- Controls Area --- */
+.controls {
+    position: relative;
+    z-index: 20;
+    width: 100%;
+}
+
+.timeline {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 1rem;
+    font-weight: bold;
+    color: #fff;
+    margin-bottom: 25px;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.progress-bg {
+    flex: 1;
+    height: 10px;
+    background: rgba(0, 0, 0, 0.5);
+    margin: 0 10px;
+    border-radius: 5px;
+    position: relative;
+    cursor: pointer;
+}
+
+.progress-fill {
+    width: 0%;
+    height: 100%;
+    background: #fff;
+    border-radius: 5px;
+    position: relative;
+    pointer-events: none;
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+}
+
+.progress-fill::after {
+    content: '';
+    position: absolute;
+    right: -8px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 16px;
+    height: 16px;
+    background: #fff;
+    border-radius: 50%;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+}
+
+.btn-row {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.btn {
+    background: none;
+    border: none;
+    font-size: 2rem;
+    color: #fff;
+    cursor: pointer;
+    transition: transform 0.1s;
+    margin: 0 20px;
+    text-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+}
+
+.btn:active {
+    transform: scale(0.9);
+}
+
+.play-btn {
+    width: 60px;
+    height: 60px;
+    background: rgba(0, 0, 0, 0.8);
+    color: #fff;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.6rem;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.btn.list {
+    position: absolute;
+    top: 20px;
+    left: 30px;
+    font-size: 1.5rem;
+    z-index: 50;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0;
+}
+
+/* Hidden File Input */
+#fileInput {
+    display: none;
+}
+
+@media (max-width: 768px) {
+    .player-card {
+        width: 80%;
+        height: 350px;
+        padding: 20px;
+    }
+
+    .disc-wrapper {
+        width: 250px;
+        height: 250px;
+        top: -60px;
+        right: -30px;
+    }
+
+    .song-title-container {
+        bottom: 45%;
+        left: -50px;
+        width: 160px;
+        height: 40px;
+    }
+
+    .song-title-text {
+        font-size: 1.4rem;
+    }
+}
